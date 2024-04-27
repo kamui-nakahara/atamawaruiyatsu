@@ -1,0 +1,105 @@
+<html>
+  <head>
+    <title>頭悪いやつ</title>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      const url=new URL(window.location.href);
+      const text=url.searchParams.get("text");
+      const s=url.searchParams.get("s");
+      const type=url.searchParams.get("type");
+      function Button(props:any){
+	const [selected,Select]=props.select;
+	if (props.type==="other"){
+	  return <div style={{textAlign:"center",marginTop:"10px"}}><button style={{height:"40px",width:"100px",marginRight:"20px",borderRadius:"10px",backgroundColor:"cyan"}} onClick={()=>{
+	      let target=document.getElementById("url");
+	      target.select();
+	      document.execCommand("Copy");
+	      alert("コピーしました");
+	    }}>{props.text}</button></div>;
+	}else{
+	  return <button style={{height:"40px",marginRight:"20px",borderRadius:"10px",backgroundColor:selected==props.value ? "077" : "#0ff"}} onClick={()=>{Select(props.value)}}>{props.text}</button>;
+	}
+      }
+      function Page0(){
+	const [selected,Select]=React.useState("1");
+	const [second,setSecond]=React.useState("0.5");
+	const [text,setText]=React.useState("");
+	return (
+	  <div style={{width:"500px",margin:"5% calc(50% - 250px)"}}>
+	    <div style={{display:"flex",alignItems:"center"}}>
+	      <p style={{fontSize:"30px",marginRight:"30px",width:"150px"}}>種類</p>
+	      <Button text="タイプ1" value="1" select={[selected,Select]}/>
+	      <Button text="タイプ2" value="2" select={[selected,Select]}/>
+	      <Button text="タイプ3" value="3" select={[selected,Select]}/>
+	    </div>
+	    <div style={{display:"flex",alignItems:"center"}}>
+	      <p style={{fontSize:"30px",marginRight:"30px",width:"150px"}}>秒数</p>
+	      <input type="number" style={{fontSize:"20px",width:"100px"}} value={second} onChange={(event)=>setSecond(event.target.value)}></input>
+	    </div>
+	    <div style={{display:"flex",alignItems:"center"}}>
+	      <p style={{fontSize:"30px",marginRight:"30px",width:"150px"}}>テキスト</p>
+	      <input style={{fontSize:"20px",width:"300px"}} value={text} onChange={(event)=>setText(event.target.value)}></input>
+	    </div>
+	    <input type="text" value={`https://kamui-nakahara.github.io/atamawaruiyatsu?type=${selected}&s=${second}&text=${text}`} style={{width:"100%",marginTop:"50px"}} id="url"/>
+	    <Button type="other" text="URLコピー" value="2" select={[selected,Select]}/>
+	  </div>
+	);
+      }
+      function Page1(){
+	return (
+	  <div style={{width:"100vw",height:"100vh",animation:`${s===null ? 0.5 : s}s linear color-div infinite`,backgroundColor:"hsl(calc(360 - var(--h)),50%,40%)"}}>
+	    <h1 id="text" style={{color:"hsl(var(--h),100%,40%)"}}>{text}</h1>
+	  </div>
+	);
+      }
+      function App(){
+	switch(type){
+	  case "1":
+	    return <Page1/>;
+	  case "2":
+	    return <h1>a</h1>;
+	  default:
+	    return <Page0/>;
+	}
+      }
+      const container = document.getElementById("root");
+      const root = ReactDOM.createRoot(container);
+      root.render(<App />);
+    </script>
+    <style>
+      div{
+	;
+      }
+      @property --h{
+	syntax: "<number>";
+	initial-value:0;
+	inherits:true;
+      }
+      body{
+	margin:0;
+      }
+      @keyframes color-div{
+	0%{
+	  --h:0;
+	}
+	25%{
+	  --h:90;
+	}
+	50%{
+	  --h:180;
+	}
+	75%{
+	  --h:270;
+	}
+	100%{
+	  --h:360;
+	}
+      }
+    </style>
+  </body>
+</html>
