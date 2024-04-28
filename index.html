@@ -19,7 +19,6 @@
 	      let target=document.getElementById("url");
 	      target.select();
 	      document.execCommand("Copy");
-	      alert("コピーしました");
 	    }}>{props.text}</button></div>;
 	}else{
 	  return <button style={{height:"40px",marginRight:"20px",borderRadius:"10px",backgroundColor:selected==props.value ? "077" : "#0ff"}} onClick={()=>{Select(props.value)}}>{props.text}</button>;
@@ -53,7 +52,39 @@
       function Page1(){
 	return (
 	  <div style={{width:"100vw",height:"100vh",animation:`${s===null ? 0.5 : s}s linear color-div infinite`,backgroundColor:"hsl(calc(360 - var(--h)),50%,40%)"}}>
-	    <h1 id="text" style={{color:"hsl(var(--h),100%,40%)"}}>{text}</h1>
+	    <h1 id="text" style={{fontSize:"100px",width:"150%",textAlign:"center",transform:"translate(-50%,-50%)",color:"hsl(var(--h),100%,40%)",animation:`${s===null ? 0.1 : Number(s)/5}s linear move infinite`}}>{text}</h1>
+	  </div>
+	);
+      }
+      function Page2(){
+	const [h1,setH1]=React.useState([]);
+	React.useEffect(()=>{
+	  setTimeout(()=>{
+	    const t=<h1 style={{color:"hsl(var(--h),100%,40%)",width:"100%",animation:"3s linear move-h1",left:"100%",position:"absolute",top:`${Math.floor(Math.random()*(innerHeight-100))}`}}>{text}</h1>;
+	    setH1([...h1,t]);
+	  },Number(s)*1000);
+	},[h1]);
+	return (
+	  <div style={{width:"100vw",height:"100vh",animation:`${s===null ? 0.5 : s}s linear color-div infinite`,backgroundColor:"hsl(calc(360 - var(--h)),50%,40%)"}}>
+	    {h1}
+	  </div>
+	);
+      }
+      function Page3(){
+	const [angle,setAngle]=React.useState(0);
+	React.useEffect(()=>{
+	  setTimeout(()=>{
+	    setAngle(angle+1);
+	  },Number(s)*50);
+	},[angle]);
+	return (
+	  <div style={{width:"100vw",height:"100vh",animation:`${s===null ? 0.5 : s}s linear color-div infinite`,backgroundColor:"hsl(calc(360 - var(--h)),50%,40%)"}}>
+	    {text.repeat(Math.floor(54/text.length)).split("").map((item,index)=><h1 style={{top:"25%",left:"50%",color:"hsl(var(--h),100%,40%)",position:"absolute",paddingBottom:`20%`,transform:`rotate(${index*360/(text.length*Math.floor(54/text.length))+angle}deg) translate(-50%,-50%)`}}>{item}</h1>)}
+	    {text.repeat(Math.floor(54/text.length)).split("").map((item,index)=><h1 style={{top:"28.5%",left:"50%",color:"hsl(var(--h),100%,40%)",position:"absolute",paddingBottom:`15%`,transform:`rotate(${index*360/(text.length*Math.floor(54/text.length))-angle}deg) translate(-50%,-50%)`}}>{item}</h1>)}
+	    {text.repeat(Math.floor(54/text.length)).split("").map((item,index)=><h1 style={{top:"25%",left:"25%",color:"hsl(var(--h),100%,40%)",position:"absolute",paddingBottom:`20%`,transform:`rotate(${index*360/(text.length*Math.floor(54/text.length))+angle}deg) translate(-50%,-50%)`}}>{item}</h1>)}
+	    {text.repeat(Math.floor(54/text.length)).split("").map((item,index)=><h1 style={{top:"28.5%",left:"25%",color:"hsl(var(--h),100%,40%)",position:"absolute",paddingBottom:`15%`,transform:`rotate(${index*360/(text.length*Math.floor(54/text.length))-angle}deg) translate(-50%,-50%)`}}>{item}</h1>)}
+	    {text.repeat(Math.floor(54/text.length)).split("").map((item,index)=><h1 style={{top:"25%",left:"75%",color:"hsl(var(--h),100%,40%)",position:"absolute",paddingBottom:`20%`,transform:`rotate(${index*360/(text.length*Math.floor(54/text.length))+angle}deg) translate(-50%,-50%)`}}>{item}</h1>)}
+	    {text.repeat(Math.floor(54/text.length)).split("").map((item,index)=><h1 style={{top:"28.5%",left:"75%",color:"hsl(var(--h),100%,40%)",position:"absolute",paddingBottom:`15%`,transform:`rotate(${index*360/(text.length*Math.floor(54/text.length))-angle}deg) translate(-50%,-50%)`}}>{item}</h1>)}
 	  </div>
 	);
       }
@@ -62,7 +93,9 @@
 	  case "1":
 	    return <Page1/>;
 	  case "2":
-	    return <h1>a</h1>;
+	    return <Page2/>;
+	  case "3":
+	    return <Page3/>;
 	  default:
 	    return <Page0/>;
 	}
@@ -72,8 +105,16 @@
       root.render(<App />);
     </script>
     <style>
-      div{
-	;
+      @keyframes move-h1{
+	0%{
+	  left:100%;
+	}
+	100%{
+	  left:-100%;
+	}
+      }
+      #text{
+	position:absolute;
       }
       @property --h{
 	syntax: "<number>";
@@ -82,6 +123,28 @@
       }
       body{
 	margin:0;
+      }
+      @keyframes move{
+	0%{
+	  left:50%;
+	  top:50%;
+	}
+	25%{
+	  left:45%;
+	  top:45%;
+	}
+	50%{
+	  left:50%;
+	  top:50%;
+	}
+	75%{
+	  left:55%;
+	  top:55%;
+	}
+	100%{
+	  left:50%;
+	  top:50%;
+	}
       }
       @keyframes color-div{
 	0%{
